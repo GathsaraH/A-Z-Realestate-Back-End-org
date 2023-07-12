@@ -19,4 +19,11 @@ export const systemConfig = {
     rejectUnauthorized: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
     nodeTlsRejectUnauthorized: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
   },
+  externalApi:{
+    externalApiToken: process.env[`EXTERNAL_API_TOKEN`],
+    externalApiKey: process.env[`EXTERNAL_API_KEY`],
+    externalSaleApi: process.env[`EXTERNAL_SALE_API`],
+    externalSoldApi: process.env[`EXTERNAL_SOLD_API`],
+    externalLeaseApi: process.env[`EXTERNAL_LEASE_API`],
+  }
 };

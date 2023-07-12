@@ -6,6 +6,7 @@ import { useContainer } from 'class-validator';
 import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
+import { setupSwagger } from './config/swagger-config/swagger.config';
 config();
 
 async function bootstrap() {
@@ -18,15 +19,19 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   app.enableCors({
-    origin: "*",
+    origin: '*',
     credentials: true,
   });
+  //Setup Swagger
+  setupSwagger(app);
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.json({ limit: '5000mb' }));
   app.use(bodyParser.urlencoded({ limit: '5000mb', extended: true }));
   await app.listen(configService.get('app.port'), () => {
     console.log(
-      `Cloud AZ Website Service is running at  : ${configService.get('app.port')}`,
+      `Cloud AZ Website Service is running at  : ${configService.get(
+        'app.port',
+      )}`,
     );
   });
 }

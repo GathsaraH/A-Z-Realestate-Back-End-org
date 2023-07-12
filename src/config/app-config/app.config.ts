@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { systemConfig } from './config';
 
 export default registerAs('app', () => ({
-    // General Config
+  // General Config
   nodeEnv: systemConfig.nodeEnv,
   name: systemConfig.appName,
   port: systemConfig.port,
@@ -20,4 +20,10 @@ export default registerAs('app', () => ({
   databaseMaxConnection: systemConfig.database.maxConnection,
   databaseSslEnabled: systemConfig.database.sslEnabled,
   databaseRejectUnauthorized: systemConfig.database.rejectUnauthorized,
+  //External Api Config
+  externalApiToken: systemConfig.externalApi.externalApiToken,
+  externalApiKey: systemConfig.externalApi.externalApiKey,
+  externalSaleApi: systemConfig.externalApi.externalSaleApi,
+  externalSoldApi: systemConfig.externalApi.externalSoldApi,
+  externalLeaseApi: systemConfig.externalApi.externalLeaseApi,
 }));

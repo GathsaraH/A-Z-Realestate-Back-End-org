@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { AxiosResponse } from 'axios';
 import { CloudAzService } from 'src/cloud-az/cloud-az.service';
+import { DataProcessingService } from 'src/data-processing/data-processing.service';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
 import { HttpUtilService } from 'src/http-util/http-util.service';
 import { EntityManager } from 'typeorm';
@@ -13,7 +14,7 @@ export class CronService {
     @InjectEntityManager()
     private readonly entityManager: EntityManager,
     private readonly httpService: HttpUtilService,
-    private readonly cloudAzService: CloudAzService,
+    private readonly dataProcessingService: DataProcessingService,
   ) {}
   private readonly logger = new Logger(CronService.name);
 
@@ -43,7 +44,7 @@ export class CronService {
         });
       }
       // Swapping tables
-      await this.cloudAzService.processSoldPropertyData();
+      await this.dataProcessingService.processSoldPropertyData();
       this.logger.debug(
         `Sync SoldProperty Data End at : ${new Date().toISOString()}`,
       );

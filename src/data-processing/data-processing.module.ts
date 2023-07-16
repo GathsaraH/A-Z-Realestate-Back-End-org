@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CloudAzService } from './cloud-az.service';
-import { CloudAzController } from './cloud-az.controller';
+import { DataProcessingService } from './data-processing.service';
+import { DataProcessingController } from './data-processing.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LeaseEntity } from 'src/entities/lease.entity';
-import { LeaseSyncEntity } from 'src/entities/lease-sync.entity';
 import { SoldEntity } from 'src/entities/sold.entity';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
+import { LeaseEntity } from 'src/entities/lease.entity';
+import { LeaseSyncEntity } from 'src/entities/lease-sync.entity';
 import { ReviewsEntity } from 'src/entities/reviews.entity';
 import { ReviewsSyncEntity } from 'src/entities/reviews-sync.entity';
 import { SaleEntity } from 'src/entities/sale.entity';
 import { SaleSyncEntity } from 'src/entities/sale-sync.entity.ts';
 
 @Module({
-  imports:[
+  imports: [
     TypeOrmModule.forFeature([
       SoldEntity,
       SoldSyncEntity,
@@ -24,8 +24,8 @@ import { SaleSyncEntity } from 'src/entities/sale-sync.entity.ts';
       SaleSyncEntity,
     ]),
   ],
-  controllers: [CloudAzController],
-  providers: [CloudAzService],
-  exports:[CloudAzService]
+  controllers: [DataProcessingController],
+  providers: [DataProcessingService],
+  exports:[DataProcessingService]
 })
-export class CloudAzModule {}
+export class DataProcessingModule {}

@@ -7,10 +7,11 @@ import { AppConfigModule } from './config/app-config/app.config.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { CronModule } from './cron/cron.module';
 import { CloudAzModule } from './cloud-az/cloud-az.module';
+import { DataProcessingModule } from './data-processing/data-processing.module';
 
 
 @Module({
-  imports: [DatabaseModule, AppConfigModule, TerminusModule, HttpUtilModule, CloudAzModule, CronModule],
+  imports: [DatabaseModule, AppConfigModule, TerminusModule, HttpUtilModule, CloudAzModule, CronModule, DataProcessingModule],
   controllers: [AppController],
   providers: [AppService],
 })

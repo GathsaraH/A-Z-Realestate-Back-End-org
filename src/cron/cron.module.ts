@@ -9,10 +9,11 @@ import { HttpUtilModule } from 'src/http-util/http-util.module';
 import { CloudAzModule } from 'src/cloud-az/cloud-az.module';
 import { SoldEntity } from 'src/entities/sold.entity';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
+import { DataProcessingModule } from 'src/data-processing/data-processing.module';
 
 
 @Module({
-  imports: [ScheduleModule.forRoot(),TypeOrmModule.forFeature([SoldEntity,SoldSyncEntity]),HttpUtilModule,CloudAzModule],
+  imports: [ScheduleModule.forRoot(),TypeOrmModule.forFeature([SoldEntity,SoldSyncEntity]),HttpUtilModule,DataProcessingModule],
   controllers: [CronController],
   providers: [CronService],
 })

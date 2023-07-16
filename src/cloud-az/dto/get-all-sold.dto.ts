@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {  IsNumber, IsOptional, Min } from 'class-validator';
-export class getAllLeaseDto {
+export class GetAllSoldDto {
   @ApiProperty({ required: false, default: 0, description: 'page number' })
   @IsOptional()
   @Type(() => Number)

@@ -1,9 +1,8 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { CreateCloudAzDto } from './dto/create-cloud-az.dto';
-import { UpdateCloudAzDto } from './dto/update-cloud-az.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
+import { getAllLeaseDto } from './dto/get-all-lease.dto';
+import { LeaseEntity } from 'src/entities/lease.entity';
 
 @Injectable()
 export class CloudAzService {
@@ -11,5 +10,27 @@ export class CloudAzService {
     @InjectEntityManager()
     private readonly entityManager: EntityManager,
   ) {}
-
+  async getAllLease(dto: getAllLeaseDto) {
+    try {
+      const result = this.entityManager
+        .getRepository(LeaseEntity)
+        .createQueryBuilder();
+      const totalLease = await result.getCount();
+      const totalPages =
+        totalLease % dto.limit === 0
+          ? totalLease / dto.limit
+          : Math.floor(totalLease / dto.limit) + 1;
+      const lease = await result
+        .offset(dto.offset)
+        .limit(dto.limit)
+        .getRawMany();
+      return {
+        total: totalLease,
+        totalPages,
+        data: lease,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
+  }
 }

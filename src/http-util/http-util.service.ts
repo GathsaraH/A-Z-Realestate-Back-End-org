@@ -82,8 +82,6 @@ export class HttpUtilService {
         requestConfig,
       );
     } catch (error) {
-      console.log(error);
-      
       throw new HttpException(error.message, 400);
     }
   }

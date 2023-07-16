@@ -1,9 +1,10 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { AxiosResponse } from 'axios';
-import { CloudAzService } from 'src/cloud-az/cloud-az.service';
 import { DataProcessingService } from 'src/data-processing/data-processing.service';
+import { LeaseEntity } from 'src/entities/lease.entity';
+import { ReviewsEntity } from 'src/entities/reviews.entity';
+import { SaleEntity } from 'src/entities/sale.entity';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
 import { HttpUtilService } from 'src/http-util/http-util.service';
 import { EntityManager } from 'typeorm';
@@ -22,7 +23,20 @@ export class CronService {
   async syncSalePropertyData() {
     try {
       this.logger.debug(
-        `Sync SaleProperty Data at : ${new Date().toISOString()}`,
+        `Sync SaleProperty Data Start at : ${new Date().toISOString()}`,
+      );
+      //Start Database Syncing
+      const saleProperty: AxiosResponse =
+        await this.httpService.requestSalePropertyData();
+      for (const item of saleProperty.data['items']) {
+        await this.entityManager.getRepository(SaleEntity).save({
+          saleData: item,
+        });
+      }
+      // send data processing request
+      await this.dataProcessingService.processSalePropertyData();
+      this.logger.debug(
+        `Sync SaleProperty Data End at : ${new Date().toISOString()}`,
       );
     } catch (error) {
       this.logger.debug(`Error At SaleProperty Data at : ${error}`);
@@ -43,7 +57,7 @@ export class CronService {
           soldData: item,
         });
       }
-      // Swapping tables
+      // send data processing request
       await this.dataProcessingService.processSoldPropertyData();
       this.logger.debug(
         `Sync SoldProperty Data End at : ${new Date().toISOString()}`,
@@ -57,7 +71,20 @@ export class CronService {
   async syncLeasePropertyData() {
     try {
       this.logger.debug(
-        `Sync LeaseProperty Data at : ${new Date().toISOString()}`,
+        `Sync LeaseProperty Data Start at : ${new Date().toISOString()}`,
+      );
+      //Start Database Syncing
+      const leaseProperty: AxiosResponse =
+        await this.httpService.requestSalePropertyData();
+      for (const item of leaseProperty.data['items']) {
+        await this.entityManager.getRepository(LeaseEntity).save({
+          leaseData: item,
+        });
+      }
+      // send data processing request
+      await this.dataProcessingService.processLeasePropertyData();
+      this.logger.debug(
+        `Sync LeaseProperty Data End at : ${new Date().toISOString()}`,
       );
     } catch (error) {
       this.logger.debug(`Error At LeaseProperty Data at : ${error}`);
@@ -67,7 +94,29 @@ export class CronService {
   //@Cron(CronExpression.EVERY_30_SECONDS)
   async syncReviewsData() {
     try {
-      this.logger.debug(`Sync Reviews Data at : ${new Date().toISOString()}`);
+      this.logger.debug(
+        `Sync Reviews Data Start at : ${new Date().toISOString()}`,
+      );
+      //Start Database Syncing
+      const reviewsData: AxiosResponse =
+        await this.httpService.requestReviewsData();
+      //Check if retune array oo object
+      if (Array.isArray(reviewsData.data['result'])) {
+        for (const item of reviewsData.data['result']) {
+          await this.entityManager.getRepository(ReviewsEntity).save({
+            reviewData: item,
+          });
+        }
+      } else {
+        await this.entityManager.getRepository(ReviewsEntity).save({
+          reviewData: reviewsData.data['result'],
+        });
+      }
+      // send data processing request
+      await this.dataProcessingService.processReviewsData();
+      this.logger.debug(
+        `Sync Reviews Data End at : ${new Date().toISOString()}`,
+      );
     } catch (error) {
       this.logger.debug(`Error At Reviews Data at : ${error}`);
       throw new HttpException(error.message, 400);

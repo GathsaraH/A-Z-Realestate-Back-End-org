@@ -45,4 +45,56 @@ export class HttpUtilService {
       throw new HttpException(error.message, 400);
     }
   }
+  async requestSoldPropertyData(): Promise<AxiosResponse> {
+    try {
+      const requestConfig: AxiosRequestConfig = {
+        headers: {
+          Authorization: `Bearer ${this.configService.get(
+            'app.externalApiToken',
+          )}`,
+          'X-Api-Key': `${this.configService.get('app.externalApiKey')}`,
+        },
+      };
+      return await this.makeRequest(
+        'GET',
+        `${this.configService.get('app.externalSoldApi')}`,
+        undefined,
+        requestConfig,
+      );
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
+  }
+  async requestLeasePropertyData(): Promise<AxiosResponse> {
+    try {
+      const requestConfig: AxiosRequestConfig = {
+        headers: {
+          Authorization: `Bearer ${this.configService.get(
+            'app.externalApiToken',
+          )}`,
+          'X-Api-Key': `${this.configService.get('app.externalApiKey')}`,
+        },
+      };
+      return await this.makeRequest(
+        'GET',
+        `${this.configService.get('app.externalApiKey')}`,
+        undefined,
+        requestConfig,
+      );
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
+  }
+  async requestReviewsData(): Promise<AxiosResponse> {
+    try {
+      return await this.makeRequest(
+        'GET',
+        `${this.configService.get('app.externalReviewsApi')}`,
+        undefined,
+        undefined,
+      );
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
+  }
 }

@@ -8,6 +8,7 @@ export const systemConfig = {
   appHeaderLanguage: process.env[`APP_HEADER_LANGUAGE`],
   frontendUrl: process.env[`FRONTEND_URL`],
   database: {
+    //Default Database Env Configs
     host: process.env[`DATABASE_HOST`],
     post: parseInt(process.env[`DATABASE_PORT`], 10) | 5432,
     username: process.env[`DATABASE_USERNAME`],
@@ -19,11 +20,12 @@ export const systemConfig = {
     rejectUnauthorized: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
     nodeTlsRejectUnauthorized: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
   },
-  externalApi:{
+  externalApi: {
     externalApiToken: process.env[`EXTERNAL_API_TOKEN`],
     externalApiKey: process.env[`EXTERNAL_API_KEY`],
     externalSaleApi: process.env[`EXTERNAL_SALE_API`],
     externalSoldApi: process.env[`EXTERNAL_SOLD_API`],
     externalLeaseApi: process.env[`EXTERNAL_LEASE_API`],
-  }
+    externalReviewsApi: process.env[`EXTERNAL_REVIEWS_API`],
+  },
 };

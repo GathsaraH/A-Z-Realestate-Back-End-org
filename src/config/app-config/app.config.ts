@@ -9,7 +9,7 @@ export default registerAs('app', () => ({
   apiPrefix: systemConfig.apiPrefix,
   fallbackLanguage: systemConfig.appFallBackLanguage,
   frontendUrl: systemConfig.frontendUrl,
-  // Database Config
+  //Default Database Config
   databaseType: 'postgres',
   databaseHost: systemConfig.database.host,
   databasePort: systemConfig.database.post,
@@ -26,4 +26,5 @@ export default registerAs('app', () => ({
   externalSaleApi: systemConfig.externalApi.externalSaleApi,
   externalSoldApi: systemConfig.externalApi.externalSoldApi,
   externalLeaseApi: systemConfig.externalApi.externalLeaseApi,
+  externalReviewsApi: systemConfig.externalApi.externalReviewsApi,
 }));

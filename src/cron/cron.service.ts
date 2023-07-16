@@ -139,7 +139,7 @@ export class CronService {
       } else {
         saveData= this.entityManager.getRepository(ReviewsSyncEntity).create(
           await this.entityManager.getRepository(ReviewsSyncEntity).save({
-            reviewData: reviewsData.data['result'],,
+            reviewData: reviewsData.data['result'],
           }),
         );
   

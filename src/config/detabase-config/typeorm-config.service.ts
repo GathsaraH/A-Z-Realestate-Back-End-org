@@ -24,7 +24,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       //synchronize: this.configService.get('app.databaseSynchronizeOrg'),
       synchronize: true,
       dropSchema: false,
-      autoLoadEntities: true,
       keepConnectionAlive: true,
       // logging: this.configService.get('app.nodeEnv') !== 'production',
       logging: true,

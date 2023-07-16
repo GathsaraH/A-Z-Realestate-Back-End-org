@@ -4,11 +4,8 @@ import { InjectEntityManager } from '@nestjs/typeorm';
 import { AxiosResponse } from 'axios';
 import { DataProcessingService } from 'src/data-processing/data-processing.service';
 import { LeaseSyncEntity } from 'src/entities/lease-sync.entity';
-import { LeaseEntity } from 'src/entities/lease.entity';
 import { ReviewsSyncEntity } from 'src/entities/reviews-sync.entity';
-import { ReviewsEntity } from 'src/entities/reviews.entity';
 import { SaleSyncEntity } from 'src/entities/sale-sync.entity.ts';
-import { SaleEntity } from 'src/entities/sale.entity';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
 import { HttpUtilService } from 'src/http-util/http-util.service';
 import { EntityManager } from 'typeorm';
@@ -47,7 +44,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncSoldPropertyData() {
     try {
       this.logger.debug(
@@ -71,7 +68,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncLeasePropertyData() {
     try {
       this.logger.debug(
@@ -79,7 +76,7 @@ export class CronService {
       );
       //Start Database Syncing
       const leaseProperty: AxiosResponse =
-        await this.httpService.requestSalePropertyData();
+        await this.httpService.requestLeasePropertyData();
       for (const item of leaseProperty.data['items']) {
         await this.entityManager.getRepository(LeaseSyncEntity).save({
           leaseData: item,
@@ -95,7 +92,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncReviewsData() {
     try {
       this.logger.debug(

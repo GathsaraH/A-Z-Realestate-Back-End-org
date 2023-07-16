@@ -29,7 +29,7 @@ export class CronService {
       //Start Database Syncing
       const saleProperty: AxiosResponse =
         await this.httpService.requestSalePropertyData();
-      const isDataSaved = Promise.all(
+      const isDataSaved = await Promise.all(
         saleProperty.data['items'].map(async (item) => {
           return this.entityManager.getRepository(SaleSyncEntity).create(
             await this.entityManager.getRepository(SaleSyncEntity).save({
@@ -39,7 +39,7 @@ export class CronService {
         }),
       );
       // send data processing request
-      if ((await isDataSaved).length) {
+      if (isDataSaved.length) {
         await this.dataProcessingService.processSalePropertyData();
       }
 
@@ -60,13 +60,19 @@ export class CronService {
       //Start Database Syncing
       const soldProperty: AxiosResponse =
         await this.httpService.requestSoldPropertyData();
-      for (const item of soldProperty.data['items']) {
-        await this.entityManager.getRepository(SoldSyncEntity).save({
-          soldData: item,
-        });
-      }
+      const isDataSaved = await Promise.all(
+        soldProperty.data['items'].map(async (item) => {
+          return this.entityManager.getRepository(SoldSyncEntity).create(
+            await this.entityManager.getRepository(SoldSyncEntity).save({
+              soldData: item,
+            }),
+          );
+        }),
+      );
       // send data processing request
-      await this.dataProcessingService.processSoldPropertyData();
+      if (isDataSaved.length) {
+        await this.dataProcessingService.processSoldPropertyData();
+      }
       this.logger.debug(
         `Sync SoldProperty Data End at : ${new Date().toISOString()}`,
       );
@@ -84,13 +90,19 @@ export class CronService {
       //Start Database Syncing
       const leaseProperty: AxiosResponse =
         await this.httpService.requestLeasePropertyData();
-      for (const item of leaseProperty.data['items']) {
-        await this.entityManager.getRepository(LeaseSyncEntity).save({
-          leaseData: item,
-        });
-      }
+      const isDataSaved = await Promise.all(
+        leaseProperty.data['items'].map(async (item) => {
+          return this.entityManager.getRepository(LeaseSyncEntity).create(
+            await this.entityManager.getRepository(LeaseSyncEntity).save({
+              leaseData: item,
+            }),
+          );
+        }),
+      );
       // send data processing request
-      await this.dataProcessingService.processLeasePropertyData();
+      if (isDataSaved.length) {
+        await this.dataProcessingService.processLeasePropertyData();
+      }
       this.logger.debug(
         `Sync LeaseProperty Data End at : ${new Date().toISOString()}`,
       );
@@ -108,20 +120,34 @@ export class CronService {
       //Start Database Syncing
       const reviewsData: AxiosResponse =
         await this.httpService.requestReviewsData();
+      //define global variable
+      let saveData = null;
       //Check if retune array oo object
       if (Array.isArray(reviewsData.data['result'])) {
-        for (const item of reviewsData.data['result']) {
-          await this.entityManager.getRepository(ReviewsSyncEntity).save({
-            reviewData: item,
-          });
+        const isDataSaved = await Promise.all(
+          reviewsData.data['result'].map(async (item) => {
+            return this.entityManager.getRepository(ReviewsSyncEntity).create(
+              await this.entityManager.getRepository(ReviewsSyncEntity).save({
+                reviewData: item,
+              }),
+            );
+          }),
+        );
+        if (isDataSaved.length) {
+          saveData = isDataSaved.length;
         }
       } else {
-        await this.entityManager.getRepository(ReviewsSyncEntity).save({
-          reviewData: reviewsData.data['result'],
-        });
+        saveData= this.entityManager.getRepository(ReviewsSyncEntity).create(
+          await this.entityManager.getRepository(ReviewsSyncEntity).save({
+            reviewData: reviewsData.data['result'],,
+          }),
+        );
+  
       }
       // send data processing request
-      await this.dataProcessingService.processReviewsData();
+      if(saveData !== null){
+        await this.dataProcessingService.processReviewsData();
+      }
       this.logger.debug(
         `Sync Reviews Data End at : ${new Date().toISOString()}`,
       );

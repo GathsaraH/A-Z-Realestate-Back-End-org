@@ -29,13 +29,20 @@ export class CronService {
       //Start Database Syncing
       const saleProperty: AxiosResponse =
         await this.httpService.requestSalePropertyData();
-      for (const item of saleProperty.data['items']) {
-        await this.entityManager.getRepository(SaleSyncEntity).save({
-          saleData: item,
-        });
-      }
+      const isDataSaved = Promise.all(
+        saleProperty.data['items'].map(async (item) => {
+          return this.entityManager.getRepository(SaleSyncEntity).create(
+            await this.entityManager.getRepository(SaleSyncEntity).save({
+              saleData: item,
+            }),
+          );
+        }),
+      );
       // send data processing request
-      await this.dataProcessingService.processSalePropertyData();
+      if ((await isDataSaved).length) {
+        await this.dataProcessingService.processSalePropertyData();
+      }
+
       this.logger.debug(
         `Sync SaleProperty Data End at : ${new Date().toISOString()}`,
       );
@@ -44,7 +51,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  //@Cron(CronExpression.EVERY_30_SECONDS)
   async syncSoldPropertyData() {
     try {
       this.logger.debug(
@@ -68,7 +75,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  //@Cron(CronExpression.EVERY_30_SECONDS)
   async syncLeasePropertyData() {
     try {
       this.logger.debug(
@@ -92,7 +99,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  // @Cron(CronExpression.EVERY_30_SECONDS)
   async syncReviewsData() {
     try {
       this.logger.debug(

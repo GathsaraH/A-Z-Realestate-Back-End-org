@@ -28,10 +28,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       // logging: this.configService.get('app.nodeEnv') !== 'production',
       logging: true,
       entities: [
-        SoldEntity,
-        SoldSyncEntity,
         SaleEntity,
         SaleSyncEntity,
+        SoldEntity,
+        SoldSyncEntity,
         LeaseEntity,
         LeaseSyncEntity,
         ReviewsEntity,

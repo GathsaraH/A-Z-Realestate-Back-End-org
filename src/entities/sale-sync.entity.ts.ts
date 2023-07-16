@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-@Entity({ name: 'sale_entity' })
+@Entity({ name: 'sale_sync_schema' })
 export class SaleSyncEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'sale_sync_id' })
   saleSyncId: string;

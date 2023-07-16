@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-@Entity({ name: 'review_schema' })
+@Entity({ name: 'reviews_schema' })
 export class ReviewsEntity {
   @PrimaryGeneratedColumn('uuid',{name:'review_id'})
   reviewId: string;

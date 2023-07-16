@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { LeaseEntity } from 'src/cloud-az/entities/lease.entity';
 
 @Injectable()
 export class OrgTypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -14,8 +15,14 @@ export class OrgTypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get('app.databaseUserNameOrg'),
       password: this.configService.get('app.databasePasswordOrg'),
       database: this.configService.get('app.databaseNameOrg'),
-      synchronize: this.configService.get('app.databaseSynchronizeOrg'),
-      entities: [__dirname + '/path/to/default/entities/*.entity{.ts,.js}'],
+      //synchronize: this.configService.get('app.databaseSynchronizeOrg'),
+      synchronize: true,
+      dropSchema: false,
+      autoLoadEntities: true,
+      keepConnectionAlive: true,
+      // logging: this.configService.get('app.nodeEnv') !== 'production',
+      logging: true,
+      entities: [LeaseEntity],
       migrations: [__dirname + '/path/to/default/migrations/*{.ts,.js}'],
       cli: {
         entitiesDir: 'src',

@@ -1,12 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './typeorm-config.service';
+import { OrgTypeOrmConfigService } from './org-typeorm-config.service';
 import { DataSource } from 'typeorm';
+import { SyncTypeOrmConfigService } from './sync-typeorm-config.service';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
+      useClass: OrgTypeOrmConfigService,
+      dataSourceFactory: async (options) => {
+        return await new DataSource(options).initialize();
+      },
+    }),
+    TypeOrmModule.forRootAsync({
+      useClass: SyncTypeOrmConfigService,
       dataSourceFactory: async (options) => {
         return await new DataSource(options).initialize();
       },

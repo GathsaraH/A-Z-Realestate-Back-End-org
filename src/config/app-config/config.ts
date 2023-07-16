@@ -8,22 +8,36 @@ export const systemConfig = {
   appHeaderLanguage: process.env[`APP_HEADER_LANGUAGE`],
   frontendUrl: process.env[`FRONTEND_URL`],
   database: {
-    host: process.env[`DATABASE_HOST`],
-    post: parseInt(process.env[`DATABASE_PORT`], 10) | 5432,
-    username: process.env[`DATABASE_USERNAME`],
-    password: process.env[`DATABASE_PASSWORD`],
-    name: process.env[`DATABASE_NAME`],
-    synchronize: process.env[`DATABASE_SYNCHRONIZE`],
-    maxConnection: parseInt(process.env[`DATABASE_MAX_CONNECTIONS`], 10) || 100,
-    sslEnabled: process.env[`DATABASE_SSL_ENABLED`],
-    rejectUnauthorized: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
-    nodeTlsRejectUnauthorized: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
+    //Default Database Env Configs
+    hostOrg: process.env[`DATABASE_HOST`],
+    postOrg: parseInt(process.env[`DATABASE_PORT`], 10) | 5432,
+    usernameOrg: process.env[`DATABASE_USERNAME`],
+    passwordOrg: process.env[`DATABASE_PASSWORD`],
+    nameOrg: process.env[`DATABASE_NAME`],
+    synchronizeOrg: process.env[`DATABASE_SYNCHRONIZE`],
+    maxConnectionOrg:
+      parseInt(process.env[`DATABASE_MAX_CONNECTIONS`], 10) || 100,
+    sslEnabledOrg: process.env[`DATABASE_SSL_ENABLED`],
+    rejectUnauthorizedOrg: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
+    nodeTlsRejectUnauthorizedOrg: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
+    //Sync Database Env Configs
+    hostSync: process.env[`DATABASE_HOST`],
+    postSync: parseInt(process.env[`DATABASE_PORT`], 10) | 5432,
+    usernameSync: process.env[`DATABASE_USERNAME`],
+    passwordSync: process.env[`DATABASE_PASSWORD`],
+    nameSync: process.env[`DATABASE_NAME`],
+    synchronizeSync: process.env[`DATABASE_SYNCHRONIZE`],
+    maxConnectionSync:
+      parseInt(process.env[`DATABASE_MAX_CONNECTIONS`], 10) || 100,
+    sslEnabledSync: process.env[`DATABASE_SSL_ENABLED`],
+    rejectUnauthorizedSync: process.env[`DATABASE_REJECT_UNAUTHORIZED`],
+    nodeTlsRejectUnauthorizedSync: process.env[`NODE_TLS_REJECT_UNAUTHORIZED`],
   },
-  externalApi:{
+  externalApi: {
     externalApiToken: process.env[`EXTERNAL_API_TOKEN`],
     externalApiKey: process.env[`EXTERNAL_API_KEY`],
     externalSaleApi: process.env[`EXTERNAL_SALE_API`],
     externalSoldApi: process.env[`EXTERNAL_SOLD_API`],
     externalLeaseApi: process.env[`EXTERNAL_LEASE_API`],
-  }
+  },
 };

@@ -37,7 +37,7 @@ export class CronService {
             }),
           );
         }),
-      );
+      );      
       // send data processing request
       if (isDataSaved.length) {
         await this.dataProcessingService.processSalePropertyData();
@@ -51,7 +51,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncSoldPropertyData() {
     try {
       this.logger.debug(
@@ -81,7 +81,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncLeasePropertyData() {
     try {
       this.logger.debug(
@@ -111,7 +111,7 @@ export class CronService {
       throw new HttpException(error.message, 400);
     }
   }
-  // @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncReviewsData() {
     try {
       this.logger.debug(

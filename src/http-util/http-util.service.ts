@@ -77,11 +77,13 @@ export class HttpUtilService {
       };
       return await this.makeRequest(
         'GET',
-        `${this.configService.get('app.externalApiKey')}`,
+        `${this.configService.get('app.externalLeaseApi')}`,
         undefined,
         requestConfig,
       );
     } catch (error) {
+      console.log(error);
+      
       throw new HttpException(error.message, 400);
     }
   }

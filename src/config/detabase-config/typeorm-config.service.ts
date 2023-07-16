@@ -26,7 +26,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       dropSchema: false,
       keepConnectionAlive: true,
       // logging: this.configService.get('app.nodeEnv') !== 'production',
-      logging: true,
+      logging: false,
       entities: [
         SaleEntity,
         SaleSyncEntity,

@@ -1,9 +1,13 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { AxiosResponse } from 'axios';
 import { DataProcessingService } from 'src/data-processing/data-processing.service';
+import { LeaseSyncEntity } from 'src/entities/lease-sync.entity';
 import { LeaseEntity } from 'src/entities/lease.entity';
+import { ReviewsSyncEntity } from 'src/entities/reviews-sync.entity';
 import { ReviewsEntity } from 'src/entities/reviews.entity';
+import { SaleSyncEntity } from 'src/entities/sale-sync.entity.ts';
 import { SaleEntity } from 'src/entities/sale.entity';
 import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
 import { HttpUtilService } from 'src/http-util/http-util.service';
@@ -19,7 +23,7 @@ export class CronService {
   ) {}
   private readonly logger = new Logger(CronService.name);
 
-  //@Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async syncSalePropertyData() {
     try {
       this.logger.debug(
@@ -29,7 +33,7 @@ export class CronService {
       const saleProperty: AxiosResponse =
         await this.httpService.requestSalePropertyData();
       for (const item of saleProperty.data['items']) {
-        await this.entityManager.getRepository(SaleEntity).save({
+        await this.entityManager.getRepository(SaleSyncEntity).save({
           saleData: item,
         });
       }
@@ -77,7 +81,7 @@ export class CronService {
       const leaseProperty: AxiosResponse =
         await this.httpService.requestSalePropertyData();
       for (const item of leaseProperty.data['items']) {
-        await this.entityManager.getRepository(LeaseEntity).save({
+        await this.entityManager.getRepository(LeaseSyncEntity).save({
           leaseData: item,
         });
       }
@@ -103,12 +107,12 @@ export class CronService {
       //Check if retune array oo object
       if (Array.isArray(reviewsData.data['result'])) {
         for (const item of reviewsData.data['result']) {
-          await this.entityManager.getRepository(ReviewsEntity).save({
+          await this.entityManager.getRepository(ReviewsSyncEntity).save({
             reviewData: item,
           });
         }
       } else {
-        await this.entityManager.getRepository(ReviewsEntity).save({
+        await this.entityManager.getRepository(ReviewsSyncEntity).save({
           reviewData: reviewsData.data['result'],
         });
       }

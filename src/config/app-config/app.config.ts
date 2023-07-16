@@ -37,4 +37,5 @@ export default registerAs('app', () => ({
   externalSaleApi: systemConfig.externalApi.externalSaleApi,
   externalSoldApi: systemConfig.externalApi.externalSoldApi,
   externalLeaseApi: systemConfig.externalApi.externalLeaseApi,
+  externalReviewsApi:systemConfig.externalApi.externalReviewsApi,
 }));

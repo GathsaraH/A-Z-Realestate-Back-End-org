@@ -19,7 +19,8 @@ export const systemConfig = {
       parseInt(process.env[`DATABASE_MAX_CONNECTIONS_ORG`], 10) || 100,
     sslEnabledOrg: process.env[`DATABASE_SSL_ENABLED_ORG`],
     rejectUnauthorizedOrg: process.env[`DATABASE_REJECT_UNAUTHORIZED_ORG`],
-    nodeTlsRejectUnauthorizedOrg: process.env[`NODE_TLS_REJECT_UNAUTHORIZED_ORG`],
+    nodeTlsRejectUnauthorizedOrg:
+      process.env[`NODE_TLS_REJECT_UNAUTHORIZED_ORG`],
     //Sync Database Env Configs
     hostSync: process.env[`DATABASE_HOST_SYNC`],
     postSync: parseInt(process.env[`DATABASE_PORT_SYNC`], 10) | 5432,
@@ -31,7 +32,8 @@ export const systemConfig = {
       parseInt(process.env[`DATABASE_MAX_CONNECTIONS_SYNC`], 10) || 100,
     sslEnabledSync: process.env[`DATABASE_SSL_ENABLED_SYNC`],
     rejectUnauthorizedSync: process.env[`DATABASE_REJECT_UNAUTHORIZED_SYNC`],
-    nodeTlsRejectUnauthorizedSync: process.env[`NODE_TLS_REJECT_UNAUTHORIZED_SYNC`],
+    nodeTlsRejectUnauthorizedSync:
+      process.env[`NODE_TLS_REJECT_UNAUTHORIZED_SYNC`],
   },
   externalApi: {
     externalApiToken: process.env[`EXTERNAL_API_TOKEN`],
@@ -39,5 +41,6 @@ export const systemConfig = {
     externalSaleApi: process.env[`EXTERNAL_SALE_API`],
     externalSoldApi: process.env[`EXTERNAL_SOLD_API`],
     externalLeaseApi: process.env[`EXTERNAL_LEASE_API`],
+    externalReviewsApi: process.env[`EXTERNAL_REVIEWS_API`],
   },
 };

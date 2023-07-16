@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCloudAzDto } from './dto/create-cloud-az.dto';
 import { UpdateCloudAzDto } from './dto/update-cloud-az.dto';
+import { EntityManager, Repository } from 'typeorm';
+import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
+import { LeaseEntity } from './entities/lease.entity';
 
 @Injectable()
 export class CloudAzService {
+  constructor(
+    @InjectEntityManager()
+    private readonly entityManager: EntityManager,
+  ){}
   create(createCloudAzDto: CreateCloudAzDto) {
     return 'This action adds a new cloudAz';
   }

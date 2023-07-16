@@ -10,7 +10,7 @@ export class CloudAzController {
 
   @Post()
   create(@Body() createCloudAzDto: CreateCloudAzDto) {
-    return this.cloudAzService.create(createCloudAzDto);
+    
   }
 
   @Get()

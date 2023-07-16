@@ -12,12 +12,16 @@ import { SyncTypeOrmConfigService } from './sync-typeorm-config.service';
         return await new DataSource(options).initialize();
       },
     }),
-    TypeOrmModule.forRootAsync({
-      useClass: SyncTypeOrmConfigService,
-      dataSourceFactory: async (options) => {
-        return await new DataSource(options).initialize();
-      },
-    }),
+    /**
+     * @Remove_this_for_now
+     */
+
+    // TypeOrmModule.forRootAsync({
+    //   useClass: SyncTypeOrmConfigService,
+    //   dataSourceFactory: async (options) => {
+    //     return await new DataSource(options).initialize();
+    //   },
+    // }),
   ],
 })
 export class DatabaseModule {}

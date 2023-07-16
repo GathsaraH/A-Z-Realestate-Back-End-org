@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { LeaseEntity } from 'src/entities/lease.entity';
+import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
 import { SoldEntity } from 'src/entities/sold.entity';
-
 
 @Injectable()
 export class OrgTypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -24,7 +24,7 @@ export class OrgTypeOrmConfigService implements TypeOrmOptionsFactory {
       keepConnectionAlive: true,
       // logging: this.configService.get('app.nodeEnv') !== 'production',
       logging: true,
-      entities: [LeaseEntity,SoldEntity],
+      entities: [SoldEntity, SoldSyncEntity],
       migrations: [__dirname + '/path/to/default/migrations/*{.ts,.js}'],
       cli: {
         entitiesDir: 'src',

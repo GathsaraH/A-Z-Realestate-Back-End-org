@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn,Column} from "typeorm";
-@Entity({name:'sale_entity'})
+@Entity({name:'sale_schema'})
 export class SaleEntity{
     @PrimaryGeneratedColumn('uuid',{name:'sale_id'})
     saleId:string;

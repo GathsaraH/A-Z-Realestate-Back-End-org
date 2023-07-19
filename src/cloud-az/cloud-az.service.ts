@@ -1,9 +1,14 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { CreateCloudAzDto } from './dto/create-cloud-az.dto';
-import { UpdateCloudAzDto } from './dto/update-cloud-az.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { SoldSyncEntity } from 'src/entities/sold-sync.entity';
+import { getAllLeaseDto } from './dto/get-all-lease.dto';
+import { LeaseEntity } from 'src/entities/lease.entity';
+import { GetAllSoldDto } from './dto/get-all-sold.dto';
+import { SoldEntity } from 'src/entities/sold.entity';
+import { GetAllSaleDto } from './dto/get-all-sale.dto';
+import { SaleEntity } from 'src/entities/sale.entity';
+import { GetAllReviewsDto } from './dto/get-all-reviews.dto';
+import { ReviewsEntity } from 'src/entities/reviews.entity';
 
 @Injectable()
 export class CloudAzService {
@@ -11,52 +16,96 @@ export class CloudAzService {
     @InjectEntityManager()
     private readonly entityManager: EntityManager,
   ) {}
-  private readonly logger = new Logger(CloudAzService.name);
-  async processSoldPropertyData() {
+  async getAllLease(dto: getAllLeaseDto) {
     try {
-      this.logger.debug(
-        `Process Sold Property Data Start at :${new Date().toISOString()}`,
-      );
-      await this.entityManager.transaction(
-        async (transactionalEntityManager) => {
-          await transactionalEntityManager.query(
-            `ALTER TABLE sold_schema RENAME TO temp_sold_schema;`,
-          );
-
-          await transactionalEntityManager.query(
-            `ALTER TABLE sold_sync_schema RENAME TO sold_schema;`,
-          );
-
-          await transactionalEntityManager.query(
-            `ALTER TABLE temp_sold_schema RENAME TO sold_sync_schema;`,
-          );
-          await transactionalEntityManager
-            .getRepository(SoldSyncEntity)
-            .clear();
-        },
-      );
-      this.logger.debug(
-        `Process Sold Property Data End at :${new Date().toISOString()}`,
-      );
+      const result = this.entityManager
+        .getRepository(LeaseEntity)
+        .createQueryBuilder();
+      const totalLease = await result.getCount();
+      const totalPages =
+        totalLease % dto.limit === 0
+          ? totalLease / dto.limit
+          : Math.floor(totalLease / dto.limit) + 1;
+      const lease = await result
+        .offset(dto.offset)
+        .limit(dto.limit)
+        .getRawMany();
+      return {
+        total: totalLease,
+        totalPages,
+        data: lease,
+      };
     } catch (error) {
-      this.logger.debug(`Error At Process Sold Property Data at : ${error}`);
       throw new HttpException(error.message, 400);
     }
   }
-
-  findAll() {
-    return `This action returns all cloudAz`;
+  async getAllSold(dto: GetAllSoldDto) {
+    try {
+      const result = this.entityManager
+        .getRepository(SoldEntity)
+        .createQueryBuilder();
+      const totalLease = await result.getCount();
+      const totalPages =
+        totalLease % dto.limit === 0
+          ? totalLease / dto.limit
+          : Math.floor(totalLease / dto.limit) + 1;
+      const lease = await result
+        .offset(dto.offset)
+        .limit(dto.limit)
+        .getRawMany();
+      return {
+        total: totalLease,
+        totalPages,
+        data: lease,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} cloudAz`;
+  async getAllSale(dto: GetAllSaleDto) {
+    try {
+      const result = this.entityManager
+        .getRepository(SaleEntity)
+        .createQueryBuilder();
+      const totalLease = await result.getCount();
+      const totalPages =
+        totalLease % dto.limit === 0
+          ? totalLease / dto.limit
+          : Math.floor(totalLease / dto.limit) + 1;
+      const lease = await result
+        .offset(dto.offset)
+        .limit(dto.limit)
+        .getRawMany();
+      return {
+        total: totalLease,
+        totalPages,
+        data: lease,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
-
-  update(id: number, updateCloudAzDto: UpdateCloudAzDto) {
-    return `This action updates a #${id} cloudAz`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} cloudAz`;
+  async getAllReviews(dto: GetAllReviewsDto) {
+    try {
+      const result = this.entityManager
+        .getRepository(ReviewsEntity)
+        .createQueryBuilder();
+      const totalLease = await result.getCount();
+      const totalPages =
+        totalLease % dto.limit === 0
+          ? totalLease / dto.limit
+          : Math.floor(totalLease / dto.limit) + 1;
+      const lease = await result
+        .offset(dto.offset)
+        .limit(dto.limit)
+        .getRawMany();
+      return {
+        total: totalLease,
+        totalPages,
+        data: lease,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, 400);
+    }
   }
 }
